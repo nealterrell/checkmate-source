@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C8651DFC-9D34-4EDB-A537-090005908FD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E847DD31-0A47-4E86-B3B3-724C6AC2243A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Model", "src\Lethargic.BoardGames.Model\Lethargic.BoardGames.Model.csproj", "{B8973B67-0825-4E97-A798-45D4D040EC6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Othello.Model", "src\Lethargic.BoardGames.Othello.Model\Lethargic.BoardGames.Othello.Model.csproj", "{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.ConsoleApp", "src\Lethargic.BoardGames.ConsoleApp\Lethargic.BoardGames.ConsoleApp.csproj", "{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lethargic.BoardGames.View", "src\Lethargic.BoardGames.View\Lethargic.BoardGames.View.csproj", "{551213E9-2979-4BC5-AF35-66EEAEAE1682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Othello.View", "src\Lethargic.BoardGames.Othello.View\Lethargic.BoardGames.Othello.View.csproj", "{D387FAC0-5207-49B0-92F2-5700A37B8855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Chess.Model", "src\Lethargic.BoardGames.Chess.Model\Lethargic.BoardGames.Chess.Model.csproj", "{C83E7751-1594-450C-B64B-39C96E2024D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Chess.View", "src\Lethargic.BoardGames.Chess.View\Lethargic.BoardGames.Chess.View.csproj", "{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Othello.Test", "test\Lethargic.BoardGames.Othello.Test\Lethargic.BoardGames.Othello.Test.csproj", "{EEFE6B54-1408-48F0-8A23-66F5E648E327}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lethargic.BoardGames.Chess.Test", "test\Lethargic.BoardGames.Chess.Test\Lethargic.BoardGames.Chess.Test.csproj", "{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8973B67-0825-4E97-A798-45D4D040EC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8973B67-0825-4E97-A798-45D4D040EC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8973B67-0825-4E97-A798-45D4D040EC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8973B67-0825-4E97-A798-45D4D040EC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551213E9-2979-4BC5-AF35-66EEAEAE1682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551213E9-2979-4BC5-AF35-66EEAEAE1682}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551213E9-2979-4BC5-AF35-66EEAEAE1682}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551213E9-2979-4BC5-AF35-66EEAEAE1682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D387FAC0-5207-49B0-92F2-5700A37B8855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D387FAC0-5207-49B0-92F2-5700A37B8855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D387FAC0-5207-49B0-92F2-5700A37B8855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D387FAC0-5207-49B0-92F2-5700A37B8855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C83E7751-1594-450C-B64B-39C96E2024D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83E7751-1594-450C-B64B-39C96E2024D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83E7751-1594-450C-B64B-39C96E2024D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83E7751-1594-450C-B64B-39C96E2024D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFE6B54-1408-48F0-8A23-66F5E648E327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFE6B54-1408-48F0-8A23-66F5E648E327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFE6B54-1408-48F0-8A23-66F5E648E327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFE6B54-1408-48F0-8A23-66F5E648E327}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8973B67-0825-4E97-A798-45D4D040EC6E} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{A1F674ED-6098-4441-AB1E-8C5B9AEBD66C} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{CDDABED2-5E0B-4BC0-8FAA-BCCB56825A8A} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{551213E9-2979-4BC5-AF35-66EEAEAE1682} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{D387FAC0-5207-49B0-92F2-5700A37B8855} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{C83E7751-1594-450C-B64B-39C96E2024D1} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{AF66EB34-527D-4CDE-A31B-0FE6CDE6820F} = {C8651DFC-9D34-4EDB-A537-090005908FD4}
+		{EEFE6B54-1408-48F0-8A23-66F5E648E327} = {E847DD31-0A47-4E86-B3B3-724C6AC2243A}
+		{C5BCFBA4-26B4-4168-9ACE-C1F27C7A2AB4} = {E847DD31-0A47-4E86-B3B3-724C6AC2243A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lethargic.BoardGames.Model\Lethargic.BoardGames.Model.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.Othello.Model\Lethargic.BoardGames.Othello.Model.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.View\Lethargic.BoardGames.View.csproj" />
+  </ItemGroup>
+
+</Project>
