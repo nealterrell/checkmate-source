@@ -14,7 +14,7 @@ namespace Lethargic.BoardGames.Othello.View {
 				str.Append(i);
 				str.Append(" ");
 				for (int j = 0; j < OthelloBoard.BOARD_SIZE; j++) {
-					int space = board.GetPieceAtPosition(new BoardPosition(i, j));
+					int space = board.GetPlayerAtPosition(new BoardPosition(i, j));
 					str.AppendFormat("{0} ", space == 0 ? '.' : space == 1 ? 'B' : 'W');
 				}
 				str.AppendLine();

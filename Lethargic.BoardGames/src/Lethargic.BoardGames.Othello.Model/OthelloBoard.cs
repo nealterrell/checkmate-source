@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lethargic.BoardGames.Model;
 
 namespace Lethargic.BoardGames.Othello.Model {
@@ -8,6 +9,11 @@ namespace Lethargic.BoardGames.Othello.Model {
 	/// by which player, as well as state for the current player and move history.
 	/// </summary>
 	public class OthelloBoard : IGameBoard {
+		private struct FlipSet {
+			public BoardDirection Direction { get; set; }
+			public sbyte Count { get; set; }
+		} 
+
 		public const int BOARD_SIZE = 8;
 
 		// The board is represented by an 8x8 matrix of signed bytes. Each entry represents one square on the board.
@@ -51,22 +57,21 @@ namespace Lethargic.BoardGames.Othello.Model {
 		/// </summary>
 		public int PassCount { get; private set; }
 
-		/// <summary>
-		/// Gets the current value of the board, as the difference between the number of Black pieces and White pieces.
-		/// </summary>
-		public int Value { get; private set; }
-
-		/// <summary>
-		/// Gets a list 
-		/// </summary>
+		// Move history state and properties
 		private List<OthelloMove> mMoveHistory = new List<OthelloMove>();
+		private List<List<FlipSet>> mFlipSets = new List<List<FlipSet>>();
 
 		IReadOnlyList<IGameMove> IGameBoard.MoveHistory => mMoveHistory;
 		public IReadOnlyList<OthelloMove> MoveHistory => mMoveHistory;
 
+
 		public bool IsFinished => PassCount == 2;
 
-		public GameAdvantage CurrentAdvantage => throw new NotImplementedException();
+
+		// Game advantage state and properties
+		private int mAdvantageValue;
+		private GameAdvantage mAdvantage;
+		public GameAdvantage CurrentAdvantage => mAdvantage;
 
 		// This is how we will expose the state of the gameboard in a way that reduces coupling.
 		// No one needs to know HOW the data is represented; they simply need to know which player is
@@ -75,13 +80,30 @@ namespace Lethargic.BoardGames.Othello.Model {
 		/// Returns an integer representing which player has a piece at the given position, or 0 if the position
 		/// is empty.
 		/// </summary>
-		public int GetPieceAtPosition(BoardPosition boardPosition) {
+		public int GetPlayerAtPosition(BoardPosition boardPosition) {
 			sbyte pos = mBoard[boardPosition.Row + 1, boardPosition.Col + 1];
 			if (pos == -1) { // -1 maps to player 2.
 				return 2;
 			}
 			return pos; // otherwise the value is correct
 		}
+
+		private void SetAdvantage() {
+			mAdvantage.Advantage = Math.Abs(mAdvantageValue);
+			mAdvantage.Player = mAdvantageValue > 0 ? 1 : mAdvantageValue < 0 ? 2 : 0;
+		}
+
+		private void SetPlayerAtPosition(BoardPosition position, int player) {
+			mBoard[position.Row + 1, position.Col + 1] = (sbyte)(player <= 1 ? player : -1);
+		}
+
+		/// <summary>
+		/// Returns true if the given in-bounds position is an enemy of the given player.
+		/// </summary>
+		/// <param name="pos">assumed to be in bounds</param>
+		private bool PositionIsEnemy(BoardPosition pos, int player) => GetPlayerAtPosition(pos) + player == 3;
+
+		private bool PositionIsEmpty(BoardPosition position) => GetPlayerAtPosition(position) == 0;
 
 		/// <summary>
 		/// Applies the given move to the board state.
@@ -92,6 +114,11 @@ namespace Lethargic.BoardGames.Othello.Model {
 		}
 
 		public void ApplyMove(OthelloMove m) {
+			if (m == null) {
+				throw new ArgumentNullException(nameof(m));
+			}
+
+			List<FlipSet> currentFlips = new List<FlipSet>();
 			// If the move is a pass, then we do very little.
 			if (m.IsPass) {
 				PassCount++;
@@ -99,71 +126,47 @@ namespace Lethargic.BoardGames.Othello.Model {
 			else {
 				PassCount = 0;
 				// Otherwise update the board at the move's position with the current player.
-				SetPieceAtPosition(m.Position, CurrentPlayer);
-				Value += mCurrentPlayer;
+				SetPlayerAtPosition(m.Position, CurrentPlayer);
+				mAdvantageValue += mCurrentPlayer;
 
 				// Iterate through all 8 directions radially from the move's position.
-				for (int rDelta = -1; rDelta <= 1; rDelta++) {
-					for (int cDelta = -1; cDelta <= 1; cDelta++) {
-						if (rDelta == 0 && cDelta == 0)
-							continue;
+				foreach (BoardDirection dir in BoardDirection.CardinalDirections) {
+					// Repeatedly move in the selected direction, as long as we find "enemy" squares.
+					BoardPosition newPos = m.Position;
+					int steps = 0;
+					do {
+						newPos = newPos.Translate(dir);
+						steps++;
+					} while (PositionIsEnemy(newPos, CurrentPlayer));
 
-						// Repeatedly move in the selected direction, as long as we find "enemy" squares.
-						BoardPosition newPos = m.Position;
-						int steps = 0;
+					// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
+					// "friendly" square.
+					if (steps > 1 && GetPlayerAtPosition(newPos) == CurrentPlayer) {
+						// Record a FlipSet for this direction
+						currentFlips.Add(new FlipSet() {
+							Direction = dir,
+							Count = (sbyte)(steps - 1)
+						});
+
+						var reverse = -dir;
+						// Repeatedly walk back the way we came, updating the board with the current player's piece.
 						do {
-							newPos = newPos.Translate(rDelta, cDelta);
-							steps++;
-						} while (PositionIsEnemy(newPos, mCurrentPlayer));
-
-						// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
-						// "friendly" square.
-						if (steps > 1 && GetPieceAtPosition(newPos) == CurrentPlayer) {
-							// Record this direction in the move's flipsets so the move can be undone.
-							m.AddFlipSet(
-								new OthelloMove.FlipSet() {
-									RowDelta = rDelta,
-									ColDelta = cDelta,
-									Count = steps - 1
-								});
-							// The FlipSet constructor takes no parameters; this syntax allows us to construct a FlipSet
-							// and initialize many of its properties in one expression.
-
-							// Repeatedly walk back the way we came, updating the board with the current player's piece.
-							newPos = newPos.Translate(-rDelta, -cDelta);
-							while (steps > 1) {
-								SetPieceAtPosition(newPos, CurrentPlayer);
-								Value += 2 * mCurrentPlayer;
-
-								newPos = newPos.Translate(-rDelta, -cDelta);
-								steps--;
-							}
+							newPos = newPos.Translate(reverse);
+							SetPlayerAtPosition(newPos, CurrentPlayer);
+							mAdvantageValue += 2 * mCurrentPlayer;
+							
+							steps--;
 						}
+						while (steps > 1);
 					}
 				}
 			}
+
 			// Update the rest of the board state.
 			mCurrentPlayer = -mCurrentPlayer;
+			SetAdvantage();
 			mMoveHistory.Add(m);
-		}
-
-		public void SetPieceAtPosition(BoardPosition position, int player) {
-			mBoard[position.Row + 1, position.Col + 1] = (sbyte)(player <= 1 ? player : -1);
-		}
-
-		/// <summary>
-		/// Returns true if the given position is in bounds of the board.
-		/// </summary>
-		private static bool PositionInBounds(BoardPosition pos) {
-			return pos.Row >= 0 && pos.Row < BOARD_SIZE && pos.Col >= 0 && pos.Col < BOARD_SIZE;
-		}
-
-		/// <summary>
-		/// Returns true if the given in-bounds position is an enemy of the given player.
-		/// </summary>
-		/// <param name="pos">assumed to be in bounds</param>
-		private bool PositionIsEnemy(BoardPosition pos, int player) {
-			return mBoard[pos.Row + 1, pos.Col + 1] == -player;
+			mFlipSets.Add(currentFlips);
 		}
 
 		/// <summary>
@@ -171,46 +174,34 @@ namespace Lethargic.BoardGames.Othello.Model {
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<OthelloMove> GetPossibleMoves() {
-			List<OthelloMove> moves = new List<OthelloMove>();
+			var moves = new List<OthelloMove>();
 
-			// Iterate through all 64 squares on the board, looking for an empty position.
-			for (int row = 0; row < BOARD_SIZE; row++) {
-				for (int col = 0; col < BOARD_SIZE; col++) {
-					var position = new BoardPosition(row, col);
-					if (!PositionIsEmpty(position)) {
-						continue;
-					}
+			foreach (BoardPosition position in BoardPosition.GetRectangularPositions(BOARD_SIZE, BOARD_SIZE)) {
+				if (!PositionIsEmpty(position)) {
+					continue;
+				}
 
-					bool validSquare = false;
+				// Iterate through all 8 cardinal directions from the current position.
+				foreach (BoardDirection dir in BoardDirection.CardinalDirections) {
+					// Repeatedly move in the selected direction, as long as we find "enemy" squares.
+					BoardPosition newPos = position;
+					int steps = 0;
+					do {
+						newPos = newPos.Translate(dir);
+						steps++;
+					} while (PositionIsEnemy(newPos, CurrentPlayer));
 
-					// Iterate through all 8 directions radially from the current position.
-					for (int rDelta = -1; rDelta <= 1 && !validSquare; rDelta++) {
-						for (int cDelta = -1; cDelta <= 1 && !validSquare; cDelta++) {
-							if (rDelta == 0 && cDelta == 0)
-								continue;
-
-							// Repeatedly move in the selected direction, as long as we find "enemy" squares.
-							BoardPosition newPos = position;
-							int steps = 0;
-							do {
-								newPos = newPos.Translate(rDelta, cDelta);
-								steps++;
-							} while (PositionIsEnemy(newPos, mCurrentPlayer));
-
-							// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
-							// "friendly" square.
-							if (steps > 1 && GetPieceAtPosition(newPos) == CurrentPlayer) {
-								validSquare = true;
-							}
-						}
-					}
-					// If the current position is valid, yield a move at the position.
-					if (validSquare) {
-						moves.Add(new OthelloMove(new BoardPosition(row, col)));
+					// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
+					// "friendly" square.
+					if (steps > 1 && GetPlayerAtPosition(newPos) == CurrentPlayer) {
+						moves.Add(new OthelloMove(position));
+						break;
 					}
 				}
+				// If the current position is valid, yield a move at the position.
 			}
-			// If no positions were valid, yield a "pass" move.
+
+			// If no positions were valid, return a "pass" move.
 			if (moves.Count == 0) {
 				moves.Add(new OthelloMove(new BoardPosition(-1, -1)));
 			}
@@ -218,33 +209,32 @@ namespace Lethargic.BoardGames.Othello.Model {
 			return moves;
 		}
 
-		public bool PositionIsEmpty(BoardPosition position) {
-			return GetPieceAtPosition(position) == 0;
-		}
 
 		/// <summary>
 		/// Undoes the last move, restoring the game to its state before the move was applied.
 		/// </summary>
 		public void UndoLastMove() {
-			OthelloMove m = mMoveHistory[mMoveHistory.Count - 1];
+			OthelloMove m = mMoveHistory.Last();
 
 			// Note: there is a bug in this code.
 			if (!m.IsPass) {
 				// Reset the board at the move's position.
-				mBoard[m.Position.Row, m.Position.Col] = 0;
+				SetPlayerAtPosition(m.Position, 0);
 
 				// Iterate through the move's recorded flipsets.
-				foreach (var flipSet in m.FlipSets) {
+				foreach (var flipSet in mFlipSets.Last()) {
 					BoardPosition pos = m.Position;
 					// For each flipset, walk along the flipset's direction resetting pieces.
 					for (int i = 1; i <= flipSet.Count; i++) {
-						pos = pos.Translate(flipSet.RowDelta, flipSet.ColDelta);
-						mBoard[pos.Row, pos.Col] = (sbyte)mCurrentPlayer;
+						pos = pos.Translate(flipSet.Direction);
+						// At this moment, CurrentPlayer is actually the enemy of the move that
+						// we are undoing, whose pieces we must restore.
+						SetPlayerAtPosition(pos, CurrentPlayer);
 					}
 				}
 
 				// Check to see if the second-to-last move was a pass; if so, set PassCount.
-				if (mMoveHistory.Count > 1 && (mMoveHistory[mMoveHistory.Count - 2] as OthelloMove).IsPass) {
+				if (mMoveHistory.Count > 1 && mMoveHistory[mMoveHistory.Count - 2].IsPass) {
 					PassCount = 1;
 				}
 			}
@@ -252,8 +242,10 @@ namespace Lethargic.BoardGames.Othello.Model {
 				PassCount--;
 			}
 			// Reset the remaining game state.
+			SetAdvantage();
 			mCurrentPlayer = -mCurrentPlayer;
 			mMoveHistory.RemoveAt(mMoveHistory.Count - 1);
+			mFlipSets.RemoveAt(mFlipSets.Count - 1);
 		}
 
 		IEnumerable<IGameMove> IGameBoard.GetPossibleMoves() {
