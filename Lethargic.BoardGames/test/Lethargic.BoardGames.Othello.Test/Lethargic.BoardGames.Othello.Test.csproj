@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="4.19.2" />
+    <PackageReference Include="FluentAssertions" Version="4.19.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.Othello.Model\Lethargic.BoardGames.Othello.Model.csproj" />
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.Othello.View\Lethargic.BoardGames.Othello.View.csproj" />
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.View\Lethargic.BoardGames.View.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.Test\Lethargic.BoardGames.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>
