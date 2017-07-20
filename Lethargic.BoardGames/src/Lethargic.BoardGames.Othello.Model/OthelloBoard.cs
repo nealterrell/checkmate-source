@@ -85,12 +85,15 @@ namespace Lethargic.BoardGames.Othello.Model {
 			if (pos == -1) { // -1 maps to player 2.
 				return 2;
 			}
+			if (pos == 9) { // out of bounds
+				return -1;
+			}
 			return pos; // otherwise the value is correct
 		}
 
 		private void SetAdvantage() {
-			mAdvantage.Advantage = Math.Abs(mAdvantageValue);
-			mAdvantage.Player = mAdvantageValue > 0 ? 1 : mAdvantageValue < 0 ? 2 : 0;
+			mAdvantage = new GameAdvantage(mAdvantageValue > 0 ? 1 : mAdvantageValue < 0 ? 2 : 0,
+				Math.Abs(mAdvantageValue));
 		}
 
 		private void SetPlayerAtPosition(BoardPosition position, int player) {
