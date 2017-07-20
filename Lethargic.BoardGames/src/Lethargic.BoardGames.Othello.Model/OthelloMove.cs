@@ -26,16 +26,21 @@ namespace Lethargic.BoardGames.Othello.Model {
 			Position = pos;
 		}
 
+		public override bool Equals(object obj) {
+			return Equals(obj as OthelloMove);
+		}
+
 		/// <summary>
 		/// Returns true if the two objects have the same position.
 		/// </summary>
 		public bool Equals(IGameMove obj) {
-			OthelloMove other = obj as OthelloMove;
-			return other.Position.Row == this.Position.Row && other.Position.Col == this.Position.Col;
+			return Equals(obj as OthelloMove);
 		}
 
 		public bool Equals(OthelloMove other) {
-			return other.Position.Row == this.Position.Row && other.Position.Col == this.Position.Col;
+			if (other != null)
+				return Position.Equals(other.Position);
+			return false;
 		}
 
 		// Any time you override Equals you should also override GetHashCode, which is used in hashing data structures
