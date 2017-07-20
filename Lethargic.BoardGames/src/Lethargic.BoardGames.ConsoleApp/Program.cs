@@ -10,7 +10,7 @@ namespace Lethargic.BoardGames.ConsoleApp {
 	class Program {
 		public static void Main(string[] args) {
 			IGameBoard board = new OthelloBoard();
-			IConsoleView view = new OthelloView();
+			IConsoleView view = new OthelloConsoleView();
 
 			while (!board.IsFinished) {
 				Console.WriteLine(view.BoardToString(board));
