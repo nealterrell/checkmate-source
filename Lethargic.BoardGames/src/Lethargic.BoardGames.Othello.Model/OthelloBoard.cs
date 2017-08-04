@@ -197,7 +197,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 					// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
 					// "friendly" square.
 					if (steps > 1 && GetPlayerAtPosition(newPos) == CurrentPlayer) {
-						moves.Add(new OthelloMove(position));
+						moves.Add(new OthelloMove(CurrentPlayer, position));
 						break;
 					}
 				}
@@ -206,7 +206,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 
 			// If no positions were valid, return a "pass" move.
 			if (moves.Count == 0) {
-				moves.Add(new OthelloMove(new BoardPosition(-1, -1)));
+				moves.Add(new OthelloMove(CurrentPlayer, new BoardPosition(-1, -1)));
 			}
 
 			return moves;

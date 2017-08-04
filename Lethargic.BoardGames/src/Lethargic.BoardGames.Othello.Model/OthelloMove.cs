@@ -7,6 +7,8 @@ namespace Lethargic.BoardGames.Othello.Model {
 	/// Represents a single move that can be or has been applied to an OthelloBoard object.
 	/// </summary>
 	public class OthelloMove : IGameMove, IEquatable<OthelloMove> {
+		public int Player { get; private set; }
+
 		/// <summary>
 		/// True if the move represents a "pass".
 		/// </summary>
@@ -22,7 +24,8 @@ namespace Lethargic.BoardGames.Othello.Model {
 		/// <summary>
 		/// Initializes a new OthelloMove instance representing the given board position.
 		/// </summary>
-		public OthelloMove(BoardPosition pos) {
+		public OthelloMove(int player, BoardPosition pos) {
+			Player = player;
 			Position = pos;
 		}
 
