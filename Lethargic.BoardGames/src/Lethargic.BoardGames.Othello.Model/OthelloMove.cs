@@ -7,6 +7,8 @@ namespace Lethargic.BoardGames.Othello.Model {
 	/// Represents a single move that can be or has been applied to an OthelloBoard object.
 	/// </summary>
 	public class OthelloMove : IGameMove, IEquatable<OthelloMove> {
+		private BoardPosition boardPosition;
+
 		public int Player { get; private set; }
 
 		/// <summary>
@@ -27,6 +29,10 @@ namespace Lethargic.BoardGames.Othello.Model {
 		public OthelloMove(int player, BoardPosition pos) {
 			Player = player;
 			Position = pos;
+		}
+
+		public OthelloMove(BoardPosition boardPosition) {
+			this.boardPosition = boardPosition;
 		}
 
 		public override bool Equals(object obj) {
