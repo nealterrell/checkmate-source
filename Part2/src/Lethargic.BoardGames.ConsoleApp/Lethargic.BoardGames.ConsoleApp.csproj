@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lethargic.BoardGames.Chess.Model\Lethargic.BoardGames.Chess.Model.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.Chess.View\Lethargic.BoardGames.Chess.View.csproj" />
     <ProjectReference Include="..\Lethargic.BoardGames.Model\Lethargic.BoardGames.Model.csproj" />
     <ProjectReference Include="..\Lethargic.BoardGames.Othello.Model\Lethargic.BoardGames.Othello.Model.csproj" />
     <ProjectReference Include="..\Lethargic.BoardGames.Othello.View\Lethargic.BoardGames.Othello.View.csproj" />
