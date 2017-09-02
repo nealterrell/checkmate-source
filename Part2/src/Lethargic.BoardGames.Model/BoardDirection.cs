@@ -2,23 +2,56 @@
 using System.Collections.Generic;
 
 namespace Lethargic.BoardGames.Model {
+	/// <summary>
+	/// Represents a direction of movement on a rectangular game board grid.
+	/// </summary>
 	public struct BoardDirection : IEquatable<BoardDirection> {
-		public sbyte RowDelta { get; private set; }
-		public sbyte ColDelta { get; private set; }
+		/// <summary>
+		/// Negative means "up", positive means "down".
+		/// </summary>
+		public sbyte RowDelta { get; }
+		/// <summary>
+		/// Negative means "left", positive means "right".
+		/// </summary>
+		public sbyte ColDelta { get; }
 
 		public BoardDirection(sbyte rowDelta, sbyte colDelta) {
 			RowDelta = rowDelta;
 			ColDelta = colDelta;
 		}
 
-		public bool Equals(BoardDirection other) {
-			return RowDelta == other.RowDelta && ColDelta == other.ColDelta;
+		public bool Equals(BoardDirection other) =>
+			RowDelta == other.RowDelta && ColDelta == other.ColDelta;
+
+		public override bool Equals(object obj) =>
+			Equals((BoardDirection)obj);
+
+		public override int GetHashCode() {
+			unchecked {
+				return (RowDelta.GetHashCode() * 397) ^ ColDelta.GetHashCode();
+			}
 		}
 
-		public static BoardDirection operator-(BoardDirection rhs) {
-			return new BoardDirection((sbyte)-rhs.RowDelta, (sbyte)-rhs.ColDelta);
-		}
+		public static bool operator ==(BoardDirection left, BoardDirection right) =>
+			left.Equals(right);
 
+		public static bool operator !=(BoardDirection left, BoardDirection right) =>
+			!left.Equals(right);
+
+		// An overridden ToString makes debugging easier.
+		public override string ToString() =>
+			"<" + RowDelta + ", " + ColDelta + ">";
+
+		/// <summary>
+		/// Reverses a BoardDirection.
+		/// </summary>
+		public static BoardDirection operator -(BoardDirection rhs) =>
+			new BoardDirection((sbyte)-rhs.RowDelta, (sbyte)-rhs.ColDelta);
+
+		/// <summary>
+		/// A sequence of 1-square movements in the eight cardinal directions: 
+		/// north-west, north, north-east, west, east, south-west, south, south-east.
+		/// </summary>
 		public static IEnumerable<BoardDirection> CardinalDirections { get; }
 			= new BoardDirection[] {
 				new BoardDirection(-1, -1),

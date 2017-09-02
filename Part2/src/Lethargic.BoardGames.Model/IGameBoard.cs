@@ -17,7 +17,7 @@ namespace Lethargic.BoardGames.Model {
 		/// </summary>
 		/// <param name="move">assumed to be a value from the sequence returned by GetPossibleMoves.</param>
 		/// <see cref="GetPossibleMoves"/>
-		void ApplyMove(IGameMove m);
+		void ApplyMove(IGameMove move);
 
 		/// <summary>
 		/// Undoes the most recent move, restoring the game state to the moment when the move was applied.

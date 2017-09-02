@@ -10,11 +10,11 @@ namespace Lethargic.BoardGames.Model {
 		/// <summary>
 		/// The row of the position.
 		/// </summary>
-		public int Row { get; private set; }
+		public int Row { get; }
 		/// <summary>
 		/// The column of the position.
 		/// </summary>
-		public int Col { get; private set; }
+		public int Col { get; }
 
 		public BoardPosition(int row, int col) {
 			Row = row;
@@ -28,9 +28,8 @@ namespace Lethargic.BoardGames.Model {
 		/// <param name="rDelta">the amount to change the new position's row by</param>
 		/// <param name="cDelta">the amount to change the new position's column by</param>
 		/// <returns>a new BoardPosition object that has been translated from the source</returns>
-		public BoardPosition Translate(int rDelta, int cDelta) {
-			return new BoardPosition(Row + rDelta, Col + cDelta);
-		}
+		public BoardPosition Translate(int rDelta, int cDelta) =>
+			new BoardPosition(Row + rDelta, Col + cDelta);
 
 		/// <summary>
 		/// Translates the BoardPosition by the given amount in the row and column directions, returning a new
@@ -38,23 +37,42 @@ namespace Lethargic.BoardGames.Model {
 		/// </summary>
 		/// <param name="direction">a BoardDirection object giving the amount to change the new position's row and column by</param>
 		/// <returns>a new BoardPosition object that has been translated from the source</returns>
-		public BoardPosition Translate(BoardDirection direction) {
-			return Translate(direction.RowDelta, direction.ColDelta);
-		}
+		public BoardPosition Translate(BoardDirection direction) =>
+			Translate(direction.RowDelta, direction.ColDelta);
 
 		// An overridden ToString makes debugging easier.
-		public override string ToString() {
-			return "(" + Row + ", " + Col + ")";
-		}
+		public override string ToString() =>
+			"(" + Row + ", " + Col + ")";
 
 		/// <summary>
 		/// Two board positions are equal if they have the same row and column.
 		/// </summary>
 		/// <param name="other"></param>
-		public bool Equals(BoardPosition other) {
-			return Row == other.Row && Col == other.Col;
+		public bool Equals(BoardPosition other) =>
+			Row == other.Row && Col == other.Col;
+
+		// These methods are helpful and necessary when overriding Equals.
+		public override bool Equals(object obj) =>
+			Equals((BoardPosition) obj);
+
+		public override int GetHashCode() {
+			unchecked {
+				return (Row * 397) ^ Col;
+			}
 		}
 
+		public static bool operator ==(BoardPosition left, BoardPosition right) =>
+			left.Equals(right);
+
+		public static bool operator !=(BoardPosition left, BoardPosition right) =>
+			!left.Equals(right);
+
+		/// <summary>
+		/// Returns a sequence of BoardPosition objects representing each square on a given rectangular
+		/// game board, in row-major order.
+		/// </summary>
+		/// <param name="rows">the number of horizontal rows on the board</param>
+		/// <param name="cols">the number of vertical columns on the board</param>
 		public static IEnumerable<BoardPosition> GetRectangularPositions(int rows, int cols) {
 			return 
 				from r in Enumerable.Range(0, 8)

@@ -7,37 +7,32 @@ namespace Lethargic.BoardGames.Othello.Model {
 	/// Represents a single move that can be or has been applied to an OthelloBoard object.
 	/// </summary>
 	public class OthelloMove : IGameMove, IEquatable<OthelloMove> {
-		private BoardPosition boardPosition;
-
-		public int Player { get; private set; }
+		public int Player { get; set; }
 
 		/// <summary>
 		/// True if the move represents a "pass".
 		/// </summary>
-		public bool IsPass {
-			get { return Position.Row == -1 && Position.Col == -1; }
-		}
+		public bool IsPass =>
+			Position.Row == -1 && Position.Col == -1; 
 
 		/// <summary>
 		/// The position of the move.
 		/// </summary>
-		public BoardPosition Position { get; private set; }
+		public BoardPosition Position { get; }
 
 		/// <summary>
 		/// Initializes a new OthelloMove instance representing the given board position.
 		/// </summary>
-		public OthelloMove(int player, BoardPosition pos) {
-			Player = player;
+		public OthelloMove(BoardPosition pos) {
 			Position = pos;
 		}
-
-		public OthelloMove(BoardPosition boardPosition) {
-			this.boardPosition = boardPosition;
-		}
-
+		
 		public override bool Equals(object obj) {
 			return Equals(obj as OthelloMove);
 		}
+
+		public override int GetHashCode() =>
+			Position.GetHashCode();
 
 		/// <summary>
 		/// Returns true if the two objects have the same position.
@@ -47,17 +42,10 @@ namespace Lethargic.BoardGames.Othello.Model {
 		}
 
 		public bool Equals(OthelloMove other) {
-			if (other != null)
-				return Position.Equals(other.Position);
-			return false;
+			return other != null && Position.Equals(other.Position);
 		}
-
-		// Any time you override Equals you should also override GetHashCode, which is used in hashing data structures
-		// to find hash buckets for an object.
-		public override int GetHashCode() {
-			return Position.GetHashCode();
-		}
-
+		
+		// For debugging.
 		public override string ToString() {
 			return Position.ToString();
 		}
