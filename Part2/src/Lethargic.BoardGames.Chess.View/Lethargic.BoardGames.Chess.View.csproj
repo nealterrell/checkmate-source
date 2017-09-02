@@ -4,4 +4,9 @@
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lethargic.BoardGames.Chess.Model\Lethargic.BoardGames.Chess.Model.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.View\Lethargic.BoardGames.View.csproj" />
+  </ItemGroup>
+
 </Project>
