@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.Chess.View\Lethargic.BoardGames.Chess.View.csproj" />
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.Model\Lethargic.BoardGames.Model.csproj" />
     <ProjectReference Include="..\..\src\Lethargic.BoardGames.View\Lethargic.BoardGames.View.csproj" />
+    <ProjectReference Include="..\Lethargic.BoardGames.Test\Lethargic.BoardGames.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>
