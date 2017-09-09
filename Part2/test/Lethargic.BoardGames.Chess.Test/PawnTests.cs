@@ -13,22 +13,54 @@ namespace Lethargic.BoardGames.Chess.Test {
 		[Fact]
 		public void PawnTwoSpaceMove() {
 			ChessBoard b = new ChessBoard();
-			Apply(b, Move("a2, a3")); // one space move
-			b.CurrentPlayer.Should().Be(2);
-			Apply(b, Move("a7, a5")); // player 2 response
-			b.CurrentPlayer.Should().Be(1);
 
-			var poss = b.GetPossibleMoves();
-			var oneMoveExpected = GetMovesAtPosition(poss, Pos("a3"));
-			oneMoveExpected.Should().Contain(Move("a3, a4")).And.HaveCount(1,
-				"a pawn not in its original space can only move one space forward");
+			var possMoves = b.GetPossibleMoves();
+			// Each of the pawns in rank 2 should have two move options.
+			foreach (var pos in GetPositionsInRank(2)) {
+				var movesAtPos = GetMovesAtPosition(possMoves, pos);
+				movesAtPos.Should().HaveCount(2)
+					.And.BeEquivalentTo(
+						Move(pos, pos.Translate(-1, 0)),
+						Move(pos, pos.Translate(-2, 0))
+				);
+			}
+			Apply(b, "a2, a3"); // one space move
 
-			var twoMovesExpected = GetMovesAtPosition(poss, Pos("b2"));
+			// Same, but for pawns in rank 7
+			foreach (var pos in GetPositionsInRank(7)) {
+				var movesAtPos = GetMovesAtPosition(possMoves, pos);
+				movesAtPos.Should().HaveCount(2)
+					.And.BeEquivalentTo(
+						Move(pos, pos.Translate(1, 0)),
+						Move(pos, pos.Translate(2, 0))
+					);
+			}
+			Apply(b, "a7, a5"); // player 2 response
+
+			possMoves = b.GetPossibleMoves();
+			var oneMoveExpected = GetMovesAtPosition(possMoves, Pos("a3"));
+			oneMoveExpected.Should().Contain(Move("a3, a4"))
+				.And.HaveCount(1, "a pawn not in its original rank can only move one space forward");
+
+			var twoMovesExpected = GetMovesAtPosition(possMoves, Pos("b2"));
 			twoMovesExpected.Should().Contain(Move("b2, b3"))
 				.And.Contain(Move("b2, b4"))
-				.And.HaveCount(2, "a pawn in its original space can move up to two spaces forward");
+				.And.HaveCount(2, "a pawn in its original rank can move up to two spaces forward");
+		}
 
-			b.CurrentAdvantage.Should().Be(Advantage(0, 0), "no operations have changed the advantage");
+		[Fact]
+		public void NoBackwardsCapture() {
+			ChessBoard b = CreateBoardFromMoves(
+				"a2, a4",
+				"b7, b5",
+				"a4, a5",
+				"c7, c6",
+				"a5, a6"
+			);
+
+			var possMoves = b.GetPossibleMoves();
+			GetMovesAtPosition(possMoves, Pos("b5")).Should().HaveCount(1)
+				.And.Contain(Move("b5, b4"));
 		}
 
 		/// <summary>
