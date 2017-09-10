@@ -84,7 +84,7 @@ namespace Lethargic.BoardGames.Chess.Test {
 
 			Apply(b, Move("a4, b5"));
 			b.GetPieceAtPosition(Pos("b5")).Player.Should().Be(1, "Player 1 captured Player 2's pawn diagonally");
-			b.CurrentAdvantage.Should().Be(Advantage(2, 1), "Black lost a single pawn of 1 value");
+			b.CurrentAdvantage.Should().Be(Advantage(1, 1), "Black lost a single pawn of 1 value");
 
 			b.UndoLastMove();
 			b.CurrentAdvantage.Should().Be(Advantage(0, 0), "after undoing the pawn capture, advantage is neutral");
