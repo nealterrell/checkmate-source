@@ -27,6 +27,7 @@ namespace Lethargic.BoardGames.Chess.Test {
 			Apply(b, "a2, a3"); // one space move
 
 			// Same, but for pawns in rank 7
+			possMoves = b.GetPossibleMoves();
 			foreach (var pos in GetPositionsInRank(7)) {
 				var movesAtPos = GetMovesAtPosition(possMoves, pos);
 				movesAtPos.Should().HaveCount(2)
