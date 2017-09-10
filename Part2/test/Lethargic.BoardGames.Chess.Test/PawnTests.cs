@@ -147,10 +147,10 @@ namespace Lethargic.BoardGames.Chess.Test {
 			var enPassantExpected = GetMovesAtPosition(possMoves, Pos("a5"));
 			enPassantExpected.Should().HaveCount(2, "pawn can move forward one or en passant")
 				.And.Contain(Move("a5, a6"))
-				.And.Contain(Move("a5, b6"));
+				.And.Contain(Move(Pos("a5"), Pos("b6"), ChessMoveType.EnPassant));
 
 			// Apply the en passant
-			Apply(b, Move("a5, b6"));
+			Apply(b, Move(Pos("a5"), Pos("b6"), ChessMoveType.EnPassant));
 			var pawn = b.GetPieceAtPosition(Pos("b6"));
 			pawn.Player.Should().Be(1, "pawn performed en passant move");
 			pawn.PieceType.Should().Be(ChessPieceType.Pawn);
