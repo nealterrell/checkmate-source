@@ -54,5 +54,11 @@ namespace Lethargic.BoardGames.Chess.Test {
 			return Enumerable.Range(0, 8)
 				.Select(c => start.Translate(0, c));
 		}
+
+		protected IEnumerable<BoardPosition> GetPositionsInFile(int file) {
+			BoardPosition start = new BoardPosition(0, file); // The leftmost position in the given rank.
+			return Enumerable.Range(0, 8)
+				.Select(r => start.Translate(r, 0));
+		}
 	}
 }

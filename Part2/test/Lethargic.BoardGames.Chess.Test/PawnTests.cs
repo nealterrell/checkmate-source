@@ -50,22 +50,53 @@ namespace Lethargic.BoardGames.Chess.Test {
 		}
 
 		[Fact]
-		public void NoBackwardsCapture() {
+		public void PawnTwoSpaceMove_IfUnblocked() {
+			// Move a pawn from each side to in front of the other's starting pawns.
 			ChessBoard b = CreateBoardFromMoves(
 				"a2, a4",
 				"b7, b5",
 				"a4, a5",
-				"c7, c6",
-				"a5, a6"
+				"b5, b4",
+				"a5, a6",
+				"b4, b3"
 			);
 
 			var possMoves = b.GetPossibleMoves();
-			GetMovesAtPosition(possMoves, Pos("b5")).Should().HaveCount(1)
-				.And.Contain(Move("b5, b4"));
+			var blockedPawn = GetMovesAtPosition(possMoves, Pos("b2"));
+			blockedPawn.Should().BeEmpty("The pawn at b2 is blocked by the enemy at b3");
+			Apply(b, Move("c2, c4"));
+
+			possMoves = b.GetPossibleMoves();
+			blockedPawn = GetMovesAtPosition(possMoves, Pos("a7"));
+			blockedPawn.Should().BeEmpty("The pawn at a7 is blocked by the enemy at a6");
 		}
 
 		/// <summary>
-		/// Pawn capture.
+		/// A pawn cannot make a two space movement if it is on the enemy's starting rank.
+		/// </summary>
+		[Fact]
+		public void PawnTwoSpaceMove_DirectionMatters() {
+			ChessBoard b = CreateBoardFromMoves(
+				"a2, a4",
+				"b7, b5",
+				"a4, b5",
+				"b8, a6",
+				"b5, b6",
+				"h7, h5",
+				"b6, b7",
+				"h5, h4"
+			);
+			var possMoves = b.GetPossibleMoves();
+			var oneMove = GetMovesAtPosition(possMoves, Pos("b7"));
+			// The pawn at b7 should have 12 possible moves: 4 promotion moves each, for a move forward,
+			// and two capturing moves diagonally.
+			oneMove.Should().HaveCount(12)
+				.And.NotContain(Move("b7, b9"))
+				.And.OnlyContain(m => m.MoveType == ChessMoveType.PawnPromote);
+		}
+
+		/// <summary>
+		/// Pawn diagonal capture.
 		/// </summary>
 		[Fact]
 		public void PawnCapture() {
@@ -88,6 +119,59 @@ namespace Lethargic.BoardGames.Chess.Test {
 
 			b.UndoLastMove();
 			b.CurrentAdvantage.Should().Be(Advantage(0, 0), "after undoing the pawn capture, advantage is neutral");
+		}
+
+		[Fact]
+		public void PawnCapture_EvenIfBlocked() {
+			ChessBoard b = CreateBoardFromMoves(
+				Move("a2, a4"),
+				Move("h7, h5"),
+				Move("a4, a5"),
+				Move("h5, h4"),
+				Move("a5, a6")
+			);
+
+			var possMoves = b.GetPossibleMoves();
+			var threeMoves = GetMovesAtPosition(possMoves, Pos("b7"));
+			threeMoves.Should().HaveCount(3)
+				.And.BeEquivalentTo(Move("b7, a6"), Move("b7, b6"), Move("b7, b5"));
+		}
+
+		[Fact]
+		public void PawnCapture_NoBackwardsCapture() {
+			ChessBoard b = CreateBoardFromMoves(
+				"a2, a4",
+				"b7, b5",
+				"a4, a5",
+				"c7, c6",
+				"a5, a6"
+			);
+
+			var possMoves = b.GetPossibleMoves();
+			GetMovesAtPosition(possMoves, Pos("b5")).Should().HaveCount(1)
+				.And.Contain(Move("b5, b4"));
+		}
+
+		/// <summary>
+		/// Pawns cannot capture diagonally off the board, wrapping to another row.
+		/// </summary>
+		[Fact]
+		public void PawnBorderCapture() {
+			ChessBoard b = CreateBoardFromMoves(
+				Move("a2, a4"),
+				Move("h7, h5")
+			);
+
+			var possMoves = b.GetPossibleMoves();
+			var forwardOnly = GetMovesAtPosition(possMoves, Pos("a4"));
+			forwardOnly.Should().HaveCount(1)
+				.And.Contain(Move("a4, a5"));
+
+			Apply(b, Move("b2, b4"));
+			possMoves = b.GetPossibleMoves();
+			forwardOnly = GetMovesAtPosition(possMoves, Pos("h5"));
+			forwardOnly.Should().HaveCount(1)
+				.And.Contain(Move("h5, h4"));
 		}
 
 		/// <summary>
