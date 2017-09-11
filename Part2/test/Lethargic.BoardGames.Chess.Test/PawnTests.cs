@@ -184,21 +184,17 @@ namespace Lethargic.BoardGames.Chess.Test {
 				"a7, a5",
 				"b4, b5",
 				"a8, a6",
-				"b5, a6" // capture rook with pawn
+				"b5, a6", // capture rook with pawn
+				"b8, c6",
+				"a6, a7",
+				"c6, d4"
 			);
 			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "a Black rook was captured");
 
-			Apply(b,
-				"b7, b6",
-				"a6, a7"
-			);
-			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "no other pieces captured");
-
-			Apply(b, "b6", "b5");
-			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "no other pieces captured");
-
+			// Make sure all possible moves are marked PawnPromote.
 			var possMoves = b.GetPossibleMoves();
-			possMoves.Should().HaveCount(4, "there are four possible promotion moves")
+			var pawnMoves = GetMovesAtPosition(possMoves, Pos("a7"));
+			pawnMoves.Should().HaveCount(4, "there are four possible promotion moves")
 				.And.OnlyContain(m => m.MoveType == ChessMoveType.PawnPromote);
 
 			// Apply the promotion move
@@ -211,9 +207,6 @@ namespace Lethargic.BoardGames.Chess.Test {
 			b.UndoLastMove();
 			b.CurrentPlayer.Should().Be(1, "undoing a pawn promotion should change the current player");
 			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "lose value of queen when undoing promotion");
-
-			b.UndoLastMove(); // this undoes the pawn's movement to the final rank
-			b.CurrentPlayer.Should().Be(1, "undoing the pawn's final movement should NOT change current player");
 		}
 
 		[Fact]

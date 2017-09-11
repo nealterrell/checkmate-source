@@ -8,17 +8,12 @@ using Lethargic.BoardGames.Model;
 using Lethargic.BoardGames.Test;
 
 namespace Lethargic.BoardGames.Chess.Test {
-	public class ChessTest : BoardGameTest<ChessBoard, ChessMove> {
-		protected ChessConsoleView ConsoleView{ get; } = new ChessConsoleView();
-
+	public class ChessTest : BoardGameTest<ChessBoard, ChessMove, ChessConsoleView> {
 		protected ChessMove Move(BoardPosition start, BoardPosition end, ChessMoveType type = ChessMoveType.Normal) =>
 			new ChessMove(start, end, type);
 
 		protected ChessMove Move(string moveString) =>
 			ConsoleView.ParseMove(moveString);
-
-		protected override string ToString(ChessBoard board) =>
-			ConsoleView.BoardToString(board);
 
 		protected BoardPosition Pos(string algebraicPosition) =>
 			ChessConsoleView.ParsePosition(algebraicPosition);

@@ -3,13 +3,16 @@ using Lethargic.BoardGames.Model;
 using FluentAssertions;
 using System.Linq;
 using System.Collections.Generic;
+using Lethargic.BoardGames.View;
 
 namespace Lethargic.BoardGames.Test {
-	public abstract class BoardGameTest<TBoard, TMove>
+	public abstract class BoardGameTest<TBoard, TMove, TView>
 		where TBoard : IGameBoard, new()
-		where TMove : IGameMove {
-		protected abstract string ToString(TBoard board);
+		where TMove : IGameMove
+		where TView : IConsoleView, new() {
 
+		protected TView ConsoleView{ get; } = new TView();
+		
 		protected BoardPosition Pos(int row, int col) {
 			return new BoardPosition(row, col);
 		}
@@ -26,12 +29,10 @@ namespace Lethargic.BoardGames.Test {
 
 			var toApply = possMoves.FirstOrDefault(move.Equals);
 			if (toApply == null) {
-				throw new InvalidOperationException("Could not apply the move " + move + " to the board\n" +
-					ToString(board));
+				throw new InvalidOperationException($"Could not apply the move {ConsoleView.MoveToString(move)}"
+					+ $" to the board\n{ConsoleView.BoardToString(board)}");
 			}
-			else {
-				board.ApplyMove(toApply);
-			}
+			board.ApplyMove(toApply);
 		}
 
 		protected void Apply(TBoard board, params TMove[] moves) {
