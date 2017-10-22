@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayingCards", "src\Playing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarGame", "src\WarGame\WarGame.csproj", "{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfernoBadge", "src\InfernoBadge\InfernoBadge.csproj", "{5AF231E2-B6E3-42C7-BC6E-138320DA9463}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfernoBadge.Core", "src\InfernoBadge\InfernoBadge.Core.csproj", "{5AF231E2-B6E3-42C7-BC6E-138320DA9463}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

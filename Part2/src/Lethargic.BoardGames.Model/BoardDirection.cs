@@ -19,18 +19,21 @@ namespace Lethargic.BoardGames.Model {
 			RowDelta = rowDelta;
 			ColDelta = colDelta;
 		}
+		
+		// An overridden ToString makes debugging easier.
+		public override string ToString() =>
+			"<" + RowDelta + ", " + ColDelta + ">";
 
+
+		#region Equality methods and operators.
+		/// <summary>
+		/// True if the two objects have the same RowDelta and ColDelta.
+		/// </summary>
 		public bool Equals(BoardDirection other) =>
 			RowDelta == other.RowDelta && ColDelta == other.ColDelta;
 
 		public override bool Equals(object obj) =>
 			Equals((BoardDirection)obj);
-
-		public override int GetHashCode() {
-			unchecked {
-				return (RowDelta.GetHashCode() * 397) ^ ColDelta.GetHashCode();
-			}
-		}
 
 		public static bool operator ==(BoardDirection left, BoardDirection right) =>
 			left.Equals(right);
@@ -38,15 +41,26 @@ namespace Lethargic.BoardGames.Model {
 		public static bool operator !=(BoardDirection left, BoardDirection right) =>
 			!left.Equals(right);
 
-		// An overridden ToString makes debugging easier.
-		public override string ToString() =>
-			"<" + RowDelta + ", " + ColDelta + ">";
+		public override int GetHashCode() {
+			unchecked {
+				return (RowDelta.GetHashCode() * 397) ^ ColDelta.GetHashCode();
+			}
+		}
+		#endregion
 
 		/// <summary>
-		/// Reverses a BoardDirection.
+		/// Reverses a BoardDirection so that it points in the opposite direction.
+		/// </summary>
+		public BoardDirection Reverse() =>
+			new BoardDirection((sbyte)-RowDelta, (sbyte)-ColDelta);
+
+		/// <summary>
+		/// Reverses a BoardDirection so that it points in the opposite direction.
 		/// </summary>
 		public static BoardDirection operator -(BoardDirection rhs) =>
-			new BoardDirection((sbyte)-rhs.RowDelta, (sbyte)-rhs.ColDelta);
+			rhs.Reverse();
+
+
 
 		/// <summary>
 		/// A sequence of 1-square movements in the eight cardinal directions: 

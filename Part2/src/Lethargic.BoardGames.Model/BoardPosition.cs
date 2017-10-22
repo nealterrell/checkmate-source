@@ -44,28 +44,28 @@ namespace Lethargic.BoardGames.Model {
 		public override string ToString() =>
 			"(" + Row + ", " + Col + ")";
 
+		#region Equality methods and operators
 		/// <summary>
 		/// Two board positions are equal if they have the same row and column.
 		/// </summary>
-		/// <param name="other"></param>
 		public bool Equals(BoardPosition other) =>
 			Row == other.Row && Col == other.Col;
 
-		// These methods are helpful and necessary when overriding Equals.
 		public override bool Equals(object obj) =>
 			Equals((BoardPosition) obj);
-
-		public override int GetHashCode() {
-			unchecked {
-				return (Row * 397) ^ Col;
-			}
-		}
 
 		public static bool operator ==(BoardPosition left, BoardPosition right) =>
 			left.Equals(right);
 
 		public static bool operator !=(BoardPosition left, BoardPosition right) =>
 			!left.Equals(right);
+
+		public override int GetHashCode() {
+			unchecked {
+				return (Row * 397) ^ Col;
+			}
+		}
+		#endregion
 
 		/// <summary>
 		/// Returns a sequence of BoardPosition objects representing each square on a given rectangular
