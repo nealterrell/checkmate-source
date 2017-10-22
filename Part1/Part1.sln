@@ -7,7 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{27575EEE-288
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TargetGame", "src\TargetGame\TargetGame.csproj", "{C729D536-CEC5-4946-A94A-2F225198E4B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayingCards", "src\PlayingCards\PlayingCards.csproj", "{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayingCards", "src\PlayingCards\PlayingCards.csproj", "{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarGame", "src\WarGame\WarGame.csproj", "{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C729D536-CEC5-4946-A94A-2F225198E4B9} = {27575EEE-2889-47D2-875C-CF581717CC2C}
 		{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF} = {27575EEE-2889-47D2-875C-CF581717CC2C}
+		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC} = {27575EEE-2889-47D2-875C-CF581717CC2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2C4CA83-AC9C-470C-932E-358A74C1D813}
