@@ -46,11 +46,18 @@ namespace Lethargic.PlayingCards {
 			return r + " of " + Suit.ToString();
 		}
 
-		// Compare this card to another, to decide which wins the War game. This is inherited from the IComparable 
-		// interface.
+		// Compare this card to another, using a default comparison based only on Kind.
 		public int CompareTo(Card other) {
-			// compare the cards based on the integer value of their Kind.
+			// All enums implement IComparable and compare based on integer values.
 			return Kind.CompareTo(other.Kind);
+		}
+
+		public static bool operator <(Card lhs, Card rhs) {
+			return lhs.CompareTo(rhs) < 0;
+		}
+
+		public static bool operator >(Card lhs, Card rhs) {
+			return lhs.CompareTo(rhs) > 0;
 		}
 	}
 }

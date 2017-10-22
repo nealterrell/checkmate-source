@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayingCards", "src\Playing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarGame", "src\WarGame\WarGame.csproj", "{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfernoBadge", "src\InfernoBadge\InfernoBadge.csproj", "{5AF231E2-B6E3-42C7-BC6E-138320DA9463}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF231E2-B6E3-42C7-BC6E-138320DA9463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF231E2-B6E3-42C7-BC6E-138320DA9463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF231E2-B6E3-42C7-BC6E-138320DA9463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF231E2-B6E3-42C7-BC6E-138320DA9463}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{C729D536-CEC5-4946-A94A-2F225198E4B9} = {27575EEE-2889-47D2-875C-CF581717CC2C}
 		{AB4905B3-631B-48F3-95FC-5F5DFB6A85FF} = {27575EEE-2889-47D2-875C-CF581717CC2C}
 		{4E3E12BE-9C02-47A6-AD28-BA243A6442CC} = {27575EEE-2889-47D2-875C-CF581717CC2C}
+		{5AF231E2-B6E3-42C7-BC6E-138320DA9463} = {27575EEE-2889-47D2-875C-CF581717CC2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2C4CA83-AC9C-470C-932E-358A74C1D813}
