@@ -43,7 +43,7 @@ namespace Lethargic.BoardGames.ConsoleApp {
 				Console.WriteLine("Enter a move: ");
 				string input = Console.ReadLine();
 				IGameMove toApply = view.ParseMove(input);
-				IGameMove foundMove = possMoves.FirstOrDefault(toApply.Equals);
+				IGameMove foundMove = possMoves.SingleOrDefault(toApply.Equals);
 				if (foundMove == null) {
 					Console.WriteLine("Sorry, that move is invalid.");
 				}
@@ -77,7 +77,7 @@ namespace Lethargic.BoardGames.ConsoleApp {
 
 				if (input.StartsWith("move")) {
 					IGameMove toApply = view.ParseMove(input.Substring(5));
-					IGameMove foundMove = possMoves.FirstOrDefault(toApply.Equals);
+					IGameMove foundMove = possMoves.SingleOrDefault(toApply.Equals);
 					if (foundMove == null) {
 						Console.WriteLine("Sorry, that move is invalid.");
 					}
@@ -150,7 +150,7 @@ namespace Lethargic.BoardGames.ConsoleApp {
 
 				if (input.StartsWith("move")) {
 					IGameMove toApply = view.ParseMove(input.Substring(5));
-					IGameMove foundMove = possMoves.FirstOrDefault(toApply.Equals);
+					IGameMove foundMove = possMoves.SingleOrDefault(toApply.Equals);
 					if (foundMove == null) {
 						Console.WriteLine("Sorry, that move is invalid.");
 					}

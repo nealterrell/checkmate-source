@@ -27,7 +27,7 @@ namespace Lethargic.BoardGames.Test {
 			board.CurrentAdvantage.Should().Be(currentAdvantage,
 				"the board's value should not change after calling GetPossibleMoves");
 
-			var toApply = possMoves.FirstOrDefault(move.Equals);
+			var toApply = possMoves.SingleOrDefault(move.Equals);
 			if (toApply == null) {
 				throw new InvalidOperationException($"Could not apply the move {ConsoleView.MoveToString(move)}"
 					+ $" to the board\n{ConsoleView.BoardToString(board)}");
