@@ -22,6 +22,11 @@ namespace Lethargic.BoardGames.Othello.Model {
 			/// How many enemy pieces were flipped.
 			/// </summary>
 			public sbyte Count { get; set; }
+
+			public FlipSet(BoardDirection direction, sbyte count) {
+				Direction = direction;
+				Count = count;
+			}
 		}
 
 		#region Member variables
@@ -35,16 +40,16 @@ namespace Lethargic.BoardGames.Othello.Model {
 
 		// The board is represented by an 8x8 matrix of signed bytes. Each entry represents one square on the board.
 		private sbyte[,] mBoard = {
-			{9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, -1, 1, 0, 0, 0, 0},
-			{9, 0, 0, 0, 1, -1, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
+			{8, 8, 8, 8, 8, 8, 8, 8, 8, 8},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 0, 0, 0, -1, 1, 0, 0, 0, 0},
+			{8, 0, 0, 0, 1, -1, 0, 0, 0, 0},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{8, 8, 8, 8, 8, 8, 8, 8, 8, 8},
 		};
 
 		private List<OthelloMove> mMoveHistory = new List<OthelloMove>();
@@ -83,7 +88,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 			if (pos == -1) { // -1 maps to player 2.
 				return 2;
 			}
-			if (pos == 9) { // out of bounds
+			if (pos == 8) { // out of bounds
 				return -1;
 			}
 			return pos; // otherwise the value is correct
@@ -120,10 +125,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 					// "friendly" square.
 					if (steps > 1 && GetPlayerAtPosition(newPos) == CurrentPlayer) {
 						// Record a FlipSet for this direction
-						currentFlips.Add(new FlipSet() {
-							Direction = dir,
-							Count = (sbyte)(steps - 1)
-						});
+						currentFlips.Add(new FlipSet(dir, (sbyte)(steps - 1)));
 
 						var reverse = -dir;
 						// Repeatedly walk back the way we came, updating the board with the current player's piece.
@@ -171,7 +173,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 					// This is a valid direction of flips if we moved at least 2 squares, and ended in bounds and on a
 					// "friendly" square.
 					if (steps > 1 && GetPlayerAtPosition(newPos) == CurrentPlayer) {
-						moves.Add(new OthelloMove(position));
+						moves.Add(new OthelloMove(CurrentPlayer, position));
 						break;
 					}
 				}
@@ -180,7 +182,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 
 			// If no positions were valid, return a "pass" move.
 			if (moves.Count == 0) {
-				moves.Add(new OthelloMove(new BoardPosition(-1, -1)));
+				moves.Add(new OthelloMove(CurrentPlayer, new BoardPosition(-1, -1)));
 			}
 
 			return moves;
@@ -201,7 +203,7 @@ namespace Lethargic.BoardGames.Othello.Model {
 				foreach (var flipSet in mFlipSets.Last()) {
 					BoardPosition pos = m.Position;
 					// For each flipset, walk along the flipset's direction resetting pieces.
-					for (int i = 1; i <= flipSet.Count; i++) {
+					for (int i = 0; i < flipSet.Count; i++) {
 						pos = pos.Translate(flipSet.Direction);
 						// At this moment, CurrentPlayer is actually the enemy of the move that
 						// we are undoing, whose pieces we must restore.

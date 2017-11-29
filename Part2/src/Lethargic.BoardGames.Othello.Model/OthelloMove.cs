@@ -10,12 +10,6 @@ namespace Lethargic.BoardGames.Othello.Model {
 		public int Player { get; set; }
 
 		/// <summary>
-		/// True if the move represents a "pass".
-		/// </summary>
-		public bool IsPass =>
-			Position.Row == -1 && Position.Col == -1; 
-
-		/// <summary>
 		/// The position of the move.
 		/// </summary>
 		public BoardPosition Position { get; }
@@ -26,13 +20,15 @@ namespace Lethargic.BoardGames.Othello.Model {
 		public OthelloMove(BoardPosition pos) {
 			Position = pos;
 		}
-		
+
+		public OthelloMove(int player, BoardPosition pos) {
+			Player = player;
+			Position = pos;
+		}
+
 		public override bool Equals(object obj) {
 			return Equals(obj as OthelloMove);
 		}
-
-		public override int GetHashCode() =>
-			Position.GetHashCode();
 
 		/// <summary>
 		/// Returns true if the two objects have the same position.
@@ -44,7 +40,18 @@ namespace Lethargic.BoardGames.Othello.Model {
 		public bool Equals(OthelloMove other) {
 			return other != null && Position.Equals(other.Position);
 		}
-		
+
+
+		public override int GetHashCode() =>
+			Position.GetHashCode();
+
+		/// <summary>
+		/// True if the move represents a "pass".
+		/// </summary>
+		public bool IsPass =>
+			Position.Row == -1 && Position.Col == -1;
+
+
 		// For debugging.
 		public override string ToString() {
 			return Position.ToString();
