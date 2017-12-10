@@ -30,6 +30,18 @@ namespace Lethargic.BoardGames.Chess.Model {
 		}
 
 		public IReadOnlyList<ChessMove> MoveHistory => mMoveHistory;
+
+		public bool IsCheck {
+			get { throw new NotImplementedException(); }
+		}
+
+		public bool IsCheckmate {
+			get { throw new NotImplementedException(); }
+		}
+
+		public bool IsStalemate {
+			get { throw new NotImplementedException(); }
+		}
 		#endregion
 
 
