@@ -42,9 +42,8 @@ namespace Lethargic.BoardGames.Chess.Model {
 		}
 
 		public bool Equals(ChessMove other) {
-			return StartPosition.Equals(other.StartPosition) 
-				&& EndPosition.Equals(other.EndPosition)
-				&& MoveType.Equals(other.MoveType);
+			return StartPosition.Equals(other.StartPosition)
+				&& EndPosition.Equals(other.EndPosition);
 		}
 	}
 }

@@ -8,11 +8,11 @@ namespace Lethargic.BoardGames.Chess.Model {
 	/// </summary>
 	public struct ChessPiece {
 		public ChessPieceType PieceType { get; }
-		public byte Player { get; }
+		public sbyte Player { get; }
 
 		public ChessPiece(ChessPieceType pieceType, int player) {
 			PieceType = pieceType;
-			Player = (byte)player;
+			Player = (sbyte)player;
 		}
 	}
 }
