@@ -250,6 +250,36 @@ namespace Lethargic.BoardGames.Chess.Test {
 			forKing.Should().HaveCount(2).And.BeEquivalentTo(Move("e1, d1"), Move("e1, c1"));
 		}
 
+		/// <summary>
+		/// Promote a pawn and produce check.
+		/// </summary>
+		[Fact]
+		public void PawnPromote_IntoCheckmate() {
+			ChessBoard b = CreateBoardFromMoves(
+				"b2, b4",
+				"a7, a5",
+				"b4, b5",
+				"a8, a6",
+				"b5, a6", // capture rook with pawn
+				"b8, c6",
+				"a6, a7",
+				"b7, b5",
+				"c2, c3",
+				"c8, b7",
+				"c3, c4",
+				"d7, d6",
+				"c4, c5",
+				"d8, d7"
+			);
+
+			// Apply the promotion move
+			Apply(b, Move("(a7, a8, Rook)"));
+			b.GetPieceAtPosition(Pos("a8")).PieceType.Should().Be(ChessPieceType.Rook, "the pawn was replaced by a rook");
+			b.GetPieceAtPosition(Pos("a8")).Player.Should().Be(1, "the rook is controlled by player 1");
+			b.IsCheck.Should().BeTrue();
+			b.IsCheckmate.Should().BeFalse();
+		}
+
 		[Fact]
 		public void EnPassantTest() {
 			ChessBoard b = CreateBoardFromMoves(
