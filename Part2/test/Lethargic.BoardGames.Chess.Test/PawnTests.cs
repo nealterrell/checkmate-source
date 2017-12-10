@@ -209,6 +209,47 @@ namespace Lethargic.BoardGames.Chess.Test {
 			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "lose value of queen when undoing promotion");
 		}
 
+		/// <summary>
+		/// Promote a pawn to rook, move the rook, ensure that castling is still allowed.
+		/// </summary>
+		[Fact]
+		public void PawnPromote_Castling() {
+			ChessBoard b = CreateBoardFromMoves(
+				"b2, b4",
+				"a7, a5",
+				"b4, b5",
+				"a8, a6",
+				"b5, a6", // capture rook with pawn
+				"b8, c6",
+				"a6, a7",
+				"c6, d4"
+			);
+			b.CurrentAdvantage.Should().Be(Advantage(1, 5), "a Black rook was captured");
+
+			// Apply the promotion move
+			Apply(b, Move("(a7, a8, Rook)"));
+			b.GetPieceAtPosition(Pos("a8")).PieceType.Should().Be(ChessPieceType.Rook, "the pawn was replaced by a rook");
+			b.GetPieceAtPosition(Pos("a8")).Player.Should().Be(1, "the rook is controlled by player 1");
+
+			Apply(b,
+				"h7, h6",
+				"a8, b8", // move promoted rook
+				"h6, h5",
+				"b1, a3", // move white pieces out of the way for castling
+				"h5, h4",
+				"c1, b2",
+				"h4, h3",
+				"c2, c3",
+				"g7, g6",
+				"d1, c2",
+				"g6, g5"
+			);
+
+			var possMoves = b.GetPossibleMoves();
+			var forKing = GetMovesAtPosition(possMoves, Pos("e1"));
+			forKing.Should().HaveCount(2).And.BeEquivalentTo(Move("e1, d1"), Move("e1, c1"));
+		}
+
 		[Fact]
 		public void EnPassantTest() {
 			ChessBoard b = CreateBoardFromMoves(
